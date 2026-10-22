@@ -1,81 +1,90 @@
+<div align="center">
+
 # URL Kısaltıcı
 
-![Python](https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white)
+**Uzun bağlantıları kısa ve akılda kalan adreslere çeviren, QR kod üreten ve tıklanmaları sayan küçük bir web uygulaması.**
+Kendi bilgisayarında çalışır; hesap, reklam veya üçüncü taraf servis yok.
+
+![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-3.1-000000?logo=flask)
-[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
+[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue)](LICENSE)
 
-Uzun URL'leri kısa ve yönetilebilir bağlantılara dönüştüren, QR kod üreten ve tıklanma istatistiği tutan küçük bir Flask web uygulaması.
+</div>
 
-## Özellikler
+![Ana sayfa](screenshots/main_with_url.png)
 
-- 🔗 URL'leri kısa kodlara dönüştürme
-- 📊 Tıklanma istatistikleri takibi
-- 📱 QR kod oluşturma ve indirme
-- 💾 JSON dosyasında veri saklama
-- 🎨 Modern ve kullanıcı dostu arayüz
-- 🗑️ URL silme özelliği
-- 🛡️ Yalnızca `http`/`https` bağlantıları kabul edilir
+## Neler yapabilir?
 
-## Ekran Görüntüleri
+| | |
+| --- | --- |
+| **Kısaltma** | Uzun URL'yi rastgele 6 karakterlik bir koda çevirir (ör. `localhost:5000/aB3xY9`). |
+| **Özel kod** | İstersen kodu kendin seç (en fazla 6 harf/rakam). |
+| **QR kod** | Her kısa bağlantı için QR kod; tek tıkla PNG olarak indir. |
+| **İstatistik** | Tıklanma sayısı, oluşturulma ve son kullanım tarihi. |
+| **Yönetim** | Tüm kısaltılmış bağlantıları tek listede gör, istemediğini sil. |
+| **Güvenli** | Yalnızca `http` / `https` bağlantıları kabul edilir; `javascript:` gibi zararlı adresler reddedilir. |
 
-![Ana Sayfa](screenshots/main.png)
-![Kısaltılmış URL](screenshots/main_with_url.png)
-![İstatistikler](screenshots/stats.png)
+<table>
+  <tr>
+    <td><img src="screenshots/main.png" alt="Ana sayfa"></td>
+    <td><img src="screenshots/stats.png" alt="İstatistikler"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Bağlantı kısaltma ve liste</sub></td>
+    <td align="center"><sub>İstatistik ve QR kod</sub></td>
+  </tr>
+</table>
 
-## Kurulum
+## Hızlı başlangıç
 
-1. Projeyi klonlayın:
 ```bash
 git clone https://github.com/EfeKesgin/url-kisaltici.git
 cd url-kisaltici
-```
-
-2. Gerekli paketleri yükleyin:
-```bash
 pip install -r requirements.txt
-```
-
-3. Uygulamayı başlatın:
-```bash
 python app.py
 ```
 
-4. Tarayıcınızda `http://localhost:5000` adresine gidin.
+Tarayıcında **http://localhost:5000** adresini aç, URL'yi yapıştır ve **URL'yi Kısalt**'a tıkla.
 
-> Veriler proje klasöründeki `urls.json` dosyasında tutulur (ilk kısaltmada otomatik oluşur, depoya eklenmez).
-> Geliştirme sırasında hata ayıklama modu için: `FLASK_DEBUG=1 python app.py`
+> Kısaltılan bağlantılar proje klasöründeki `urls.json` dosyasında tutulur. Dosya ilk
+> kısaltmada kendiliğinden oluşur ve depoya eklenmez.
 
-## Kullanım
+## English
 
-1. Ana sayfada URL'yi girin
-2. İsteğe bağlı olarak özel bir kısa kod belirleyin
-3. "URL'yi Kısalt" butonuna tıklayın
-4. Kısaltılmış URL'yi ve QR kodunu görüntüleyin
-5. İstatistikleri takip edin
+**URL Kısaltıcı** is a small Flask web app that turns long links into short codes, with optional
+custom codes, QR code generation and download, click statistics and link management. It runs
+locally and stores data in a JSON file. Only `http`/`https` URLs are accepted. The interface is
+in Turkish.
 
-## Teknolojiler
+---
 
-- Python 3.9+
-- Flask
-- QRCode
-- JSON
-- HTML/CSS
-- JavaScript
+## Geliştiriciler için
 
-## Katkıda Bulunma
+### Uç noktalar
 
-1. Bu depoyu fork edin
-2. Yeni bir branch oluşturun (`git checkout -b feature/yeniOzellik`)
-3. Değişikliklerinizi commit edin (`git commit -am 'Yeni özellik: Açıklama'`)
-4. Branch'inizi push edin (`git push origin feature/yeniOzellik`)
-5. Pull Request oluşturun
+| Yol | Yöntem | İşlev |
+| --- | --- | --- |
+| `/` | GET | Ana sayfa ve bağlantı listesi |
+| `/shorten` | POST | `url` ve isteğe bağlı `custom_code` ile kısaltma |
+| `/<kod>` | GET | Asıl adrese yönlendirir, tıklanmayı sayar |
+| `/stats/<kod>` | GET | İstatistik sayfası |
+| `/qr/<kod>` | GET | QR kod (PNG) |
+| `/qr/<kod>/download` | GET | QR kodu dosya olarak indirir |
+| `/delete/<kod>` | POST | Bağlantıyı siler |
+
+`shorten`, `stats`, `qr` ve `delete` uygulamanın kendi yolları olduğu için özel kod olarak kullanılamaz.
+
+### Ayarlar
+
+- **Hata ayıklama modu** varsayılan olarak kapalıdır. Geliştirirken açmak için:
+  `FLASK_DEBUG=1 python app.py` (PowerShell: `$env:FLASK_DEBUG=1; python app.py`).
+- Uygulamada kullanıcı girişi yoktur; herkese açık bir sunucuda çalıştıracaksan silme ve
+  listeleme sayfalarını bir kimlik doğrulamanın arkasına al.
+
+### Teknolojiler
+
+Python, Flask, [qrcode](https://github.com/lincolnloop/python-qrcode) (Pillow ile), HTML/CSS.
 
 ## Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakın.
-
-## İletişim
-
-Efe Kesgin - [@EfeKesgin](https://github.com/EfeKesgin)
-
-Proje Linki: [https://github.com/EfeKesgin/url-kisaltici](https://github.com/EfeKesgin/url-kisaltici)
+URL Kısaltıcı [MIT Lisansı](LICENSE) ile dağıtılır.
