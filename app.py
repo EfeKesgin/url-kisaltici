@@ -6,6 +6,7 @@ import json
 import os
 import qrcode
 from io import BytesIO
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 
@@ -38,6 +39,14 @@ def url_kaydet():
 
 # URL'leri yükle
 urls = url_yukle()
+
+# Uygulamanın kendi yollarıyla çakışan özel kodlar
+AYRILMIS_YOLLAR = {'shorten', 'stats', 'qr', 'delete'}
+
+def gecerli_url_mi(url):
+    # Yalnızca http/https bağlantılarına izin ver (javascript: vb. engellenir)
+    parca = urlparse(url)
+    return parca.scheme in ('http', 'https') and bool(parca.netloc)
 
 def kisa_kod_olustur():
     karakterler = string.ascii_letters + string.digits
@@ -247,6 +256,8 @@ def url_kisalt():
         
         if not url:
             return render_template_string(HTML_TEMPLATE, error='URL gerekli', urls=urls)
+        if not gecerli_url_mi(url):
+            return render_template_string(HTML_TEMPLATE, error='Geçerli bir http(s) adresi girin', urls=urls)
         
         # Özel kod kontrolü
         if custom_code:
@@ -254,7 +265,7 @@ def url_kisalt():
                 return render_template_string(HTML_TEMPLATE, error='Özel kod sadece harf ve rakam içerebilir', urls=urls)
             if len(custom_code) > 6:
                 return render_template_string(HTML_TEMPLATE, error='Özel kod en fazla 6 karakter olabilir', urls=urls)
-            if custom_code in urls:
+            if custom_code in urls or custom_code in AYRILMIS_YOLLAR:
                 return render_template_string(HTML_TEMPLATE, error='Bu özel kod zaten kullanımda', urls=urls)
             short_code = custom_code
         else:
@@ -346,4 +357,5 @@ def url_sil(short_code):
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    # Hata ayıklama modu yalnızca FLASK_DEBUG=1 ile açılır
+    app.run(debug=os.environ.get('FLASK_DEBUG') == '1') 

@@ -1,6 +1,10 @@
-# URL Kısaltıcı API
+# URL Kısaltıcı
 
-Bu proje, uzun URL'leri kısa ve yönetilebilir bağlantılara dönüştüren bir web uygulamasıdır. Flask framework'ü kullanılarak geliştirilmiştir.
+![Python](https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.1-000000?logo=flask)
+[![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-blue.svg)](LICENSE)
+
+Uzun URL'leri kısa ve yönetilebilir bağlantılara dönüştüren, QR kod üreten ve tıklanma istatistiği tutan küçük bir Flask web uygulaması.
 
 ## Özellikler
 
@@ -10,10 +14,12 @@ Bu proje, uzun URL'leri kısa ve yönetilebilir bağlantılara dönüştüren bi
 - 💾 JSON dosyasında veri saklama
 - 🎨 Modern ve kullanıcı dostu arayüz
 - 🗑️ URL silme özelliği
+- 🛡️ Yalnızca `http`/`https` bağlantıları kabul edilir
 
 ## Ekran Görüntüleri
 
 ![Ana Sayfa](screenshots/main.png)
+![Kısaltılmış URL](screenshots/main_with_url.png)
 ![İstatistikler](screenshots/stats.png)
 
 ## Kurulum
@@ -36,6 +42,9 @@ python app.py
 
 4. Tarayıcınızda `http://localhost:5000` adresine gidin.
 
+> Veriler proje klasöründeki `urls.json` dosyasında tutulur (ilk kısaltmada otomatik oluşur, depoya eklenmez).
+> Geliştirme sırasında hata ayıklama modu için: `FLASK_DEBUG=1 python app.py`
+
 ## Kullanım
 
 1. Ana sayfada URL'yi girin
@@ -46,7 +55,7 @@ python app.py
 
 ## Teknolojiler
 
-- Python 3.x
+- Python 3.9+
 - Flask
 - QRCode
 - JSON
@@ -69,4 +78,4 @@ Bu proje MIT lisansı altında lisanslanmıştır. Daha fazla bilgi için `LICEN
 
 Efe Kesgin - [@EfeKesgin](https://github.com/EfeKesgin)
 
-Proje Linki: [https://github.com/EfeKesgin/url-kisaltici](https://github.com/EfeKesgin/url-kisaltici) 
+Proje Linki: [https://github.com/EfeKesgin/url-kisaltici](https://github.com/EfeKesgin/url-kisaltici)
